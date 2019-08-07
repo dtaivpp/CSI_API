@@ -22,4 +22,9 @@ if __name__ == '__main__':
   #export the data to a csv
   export_csv(data, 'C:\\Users\\datipp\\Documents\\','TestData')
 
+  #
+  # Creating another data pull is simple as adding a line below here and setting 
+  #     params equal to your new parameters. 
+  # Then set data equal to CSI.query(endpoint_spec.<endpoint>, params)
+  # Finally export the data using the export csv method
 

@@ -1,11 +1,11 @@
 from datetime import datetime
 
-def contains_special_char(_check_str):
+def _contains_special_char(_check_str):
   special_char = ['\n', ',']
   return any(st in _check_str for st in special_char)
 
 def export_csv(_data, _path, _filename, _overwrite=False ):
-  '''
+  """
   Exports Json List as csv
 
   Parameters: 
@@ -14,7 +14,28 @@ def export_csv(_data, _path, _filename, _overwrite=False ):
     FileName (Name for file)
     Overwrite (true/false whether you want previous files overwritten)
       - Defaults to false
-  '''
+  """
+
+  """
+  Export CSV
+  ~~~~~~~~~~~~~
+
+  Exports Flat Json to CSV File
+  
+  Basic Useage:
+    >>> data = {'datapoint1': "data1", 'datapoint2': "data, two", 'datapoint3': "data3"}
+    >>> export_csv(data, "C:\\DropLocation\\", "filename", False)
+    >>> data = csi.query(endpoints.AgentInfo, params)
+  
+
+  Basic Post Useage:
+    >>> csi = CSI_Connector(token)
+    >>> data = {'User': 'jsmith', 'Function': 'Pause'}
+    >>> csi.query(endpoints.lightstout, data)
+
+  :copyright: (c) 2019 by David Tippett.
+  :license: MIT License, see LICENSE for more details.
+  """
 
   if _overwrite:
     _path = _path + _filename + ".csv"
@@ -36,7 +57,7 @@ def export_csv(_data, _path, _filename, _overwrite=False ):
 
     if count == 0:
         for key in header:
-          if contains_special_char(key):
+          if _contains_special_char(key):
             _filestr += "\"" + key + "\"" + ","
           else:
             _filestr += key + ","
@@ -46,7 +67,7 @@ def export_csv(_data, _path, _filename, _overwrite=False ):
 
 
     for key in _obj:
-        if contains_special_char(_obj[key]):
+        if _contains_special_char(_obj[key]):
           _filestr += "\"" +_obj[key] + "\"" + ","
         else:
           _filestr += _obj[key] + ","

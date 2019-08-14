@@ -1,4 +1,5 @@
 import requests
+from csv_writer import _export_csv
 
 class CSI_Connector:
   """
@@ -8,7 +9,8 @@ class CSI_Connector:
   CSI Connector is a helper class to simplify communicating with the Virtual Observer / CSI API
   
   Basic Get Useage:
-    >>> csi = CSI_Connector(token)
+    >>> baseURL = "https://cloud.csiworld.com/VOWebAPI/v5"
+    >>> csi = CSI_Connector(token, baseURL)
     >>> params = {'filters': 'f.FName|o.eq|v.Tippett',
                   'fields': 'FName, LName',
                   'perpage':100}
@@ -16,6 +18,7 @@ class CSI_Connector:
   
 
   Basic Post Useage:
+    >>> baseURL = "https://cloud.csiworld.com/VOWebAPI/v5"
     >>> csi = CSI_Connector(token)
     >>> data = {'User': 'jsmith', 'Function': 'Pause'}
     >>> csi.query(endpoints.lightstout, data)
@@ -23,7 +26,7 @@ class CSI_Connector:
   :copyright: (c) 2019 by David Tippett.
   :license: MIT License, see LICENSE for more details.
   """
-  def __init__(self, token):
+  def __init__(self, token, baseURL):
     self._baseURL = 'https://cloud66.csiworld.com/VOWebAPI/v5/'
     self._headers = {
       'ApiToken': token,
@@ -88,6 +91,9 @@ class CSI_Connector:
       print(result.headers)
 
     return result
+
+  def export_as_csv(self, data, path, filename, overwrite=False ):
+    _export_csv(data, path, filename, overwrite=False )
 
   def query(self, endpoint, parameters):
     r"""

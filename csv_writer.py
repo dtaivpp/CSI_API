@@ -12,7 +12,9 @@ def process_row(_obj):
     else:
       temp_row += _obj[key] + ","
 
-  return temp_row += "\n"
+  temp_row += "\n"
+
+  return temp_row
 
 def export_csv(_data, parameters):
   """
@@ -41,7 +43,7 @@ def export_csv(_data, parameters):
   count = 0
   _filestr = ""
 
-  header = _obj.keys()
+  header = _data[0].keys()
   _filestr += process_row(header)
 
   for _obj in _data:

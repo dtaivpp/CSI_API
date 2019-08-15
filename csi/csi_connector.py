@@ -1,5 +1,5 @@
 import requests
-from csv_writer import _export_csv
+from csi.csv_writer import export_csv
 
 class CSI_Connector:
   """
@@ -27,12 +27,11 @@ class CSI_Connector:
   :license: MIT License, see LICENSE for more details.
   """
   def __init__(self, token, baseURL):
-    self._baseURL = 'https://cloud66.csiworld.com/VOWebAPI/v5/'
+    self._baseURL = baseURL
     self._headers = {
       'ApiToken': token,
       'Accept': "application/json",
       'Content-Type': "application/json",
-      'Host': "cloud66.csiworld.com",
       'Accept-Encoding': "gzip, deflate"
     } 
 
@@ -61,7 +60,7 @@ class CSI_Connector:
     """
     
     # Generating the url using the endpoint and base url 
-    url = self.baseURL + endpoint['endpoint']
+    url = self._baseURL + endpoint['endpoint']
     
     try: 
       result =  requests.get(url, \
@@ -93,7 +92,7 @@ class CSI_Connector:
     return result
 
   def export_as_csv(self, data, path, filename, overwrite=False ):
-    _export_csv(data, path, filename, overwrite=False )
+    export_csv(data, path, filename, overwrite=False )
 
   def query(self, endpoint, parameters):
     r"""

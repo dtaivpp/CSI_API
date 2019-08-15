@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/dtaivpp/CSI_API.svg?branch=master)](https://travis-ci.com/dtaivpp/CSI_API)
+
 # Using the CSI API Library 
 
 Please note this module was created in order to simplify bulk data pulling from the Virtual Observer API. This project is in no way affiliated with [CSI World / Virtual Observer](www.csiworld.com).

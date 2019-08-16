@@ -8,7 +8,7 @@ Please note this module was created in order to simplify bulk data pulling from 
 
 ## Getting Started
 
-To get started install the requests module using the following command. 
+To get started install the requests module using the following command.  
 
 `python -m pip install csi-tai`
 

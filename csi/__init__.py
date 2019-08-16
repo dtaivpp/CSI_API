@@ -1,7 +1,7 @@
 """
 CSI Api Connector
 """
-__version__ = '0.0.03'
+__version__ = '0.0.14'
 from csi.csi_connector import CsiConnector
 from csi.csi_connector import Endpoints
 from csi.csv_writer import export_csv

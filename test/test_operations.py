@@ -1,9 +1,12 @@
 import unittest
 import sys
 import os
+import json
 from unittest import mock
 sys.path.insert(1,os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
-from csi.csi_connector import CSI_Connector, endpoints
+from csi import CsiConnector
+from csi import Endpoints
+from csi import ApiError
 
 class BasicTests(unittest.TestCase):
 
@@ -34,23 +37,64 @@ class BasicTests(unittest.TestCase):
         )
     return mock_resp
 
+  
   @mock.patch('csi.csi_connector.requests.get')
-  def test_query(self, mock_get):
-    csi = CSI_Connector("asld34576y11lfawsergli34tyweo324owc", 'https://cloud.csiworld.com/VOWebAPI/v5/')
+  def test_query_get(self, mock_get):
+    csi = CsiConnector("asld34576y11lfawsergli34tyweo324owc", 'https://cloud.csiworld.com/VOWebAPI/v5/')
     
+    mock_return_headers = {
+      'Accept': 'application/json', 
+      'Accept-Encoding': 'gzip, deflate', 
+      'ApiToken': 'asld34576y11lfawsergli34tyweo324owc', 
+      'Content-Type': 'application/json'
+      }
+
+
     mock_resp = self._mock_response(
       json_data = {
         'NextPageUri': None,
-        'AgentsInfo': {'FName':'David', 'LName':'Tippett'}})
+        'AgentsInfo': [{'FName':'David', 'LName':'Tippett'}]})
   
     mock_get.return_value = mock_resp
 
     params = {'filters': 'f.FName|o.eq|v.Tippett',
                   'fields': 'FName, LName',
                   'perpage':100}
-    data = csi.query(endpoints.AgentInfo, params)
+    data = csi.query(Endpoints.AgentInfo, params)
 
-    self.assertEqual(data, {'FName':'David', 'LName':'Tippett'})
+     
+    mock_get.assert_called_with(
+      "https://cloud.csiworld.com/VOWebAPI/v5/Agents/AgentInfo", 
+      headers=mock_return_headers,
+      params=params
+      )
+    
+    self.assertEqual(data, [{'FName':'David', 'LName':'Tippett'}])
+
+
+  @mock.patch('csi.csi_connector.requests.get')
+  def test_query_failed_get(self, mock_get):
+    csi = CsiConnector("asld34576y11lfawsergli34tyweo324owc", 'https://cloud.csiworld.com/VOWebAPI/v5/')
+    
+    mock_resp = self._mock_response(
+      status = 400
+      )
+  
+    mock_get.return_value = mock_resp
+
+    params = {'filters': 'FName|eq|Tippett',
+                  'fields': 'FName, LName',
+                  'perpage':100}
+
+    with self.assertRaises(ApiError) as cm:
+      csi.query(Endpoints.AgentInfo, params)
+
+    self.assertEqual("get to Agents/AgentInfo returned 400", str(cm.exception))
+
+
+  @mock.patch('csi.csi_connector.requests.post')
+  def test_query_post(self, mock_post):
+    pass
 
 
 if __name__ == "__main__":

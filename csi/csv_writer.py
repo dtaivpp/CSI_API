@@ -25,7 +25,7 @@ def export_csv(_data, parameters):
   
   Basic Useage:
     >>> data = {'datapoint1': "data1", 'datapoint2': "data, two", 'datapoint3': "data3"}
-    >>> export_csv(data, {'path':"C:\\DropLocation\\", 'filename':"csvFile", 'overwrite':False})
+    >>> export_csv(data, {'path':'C:\\DropLocation\\ ', 'filename':"csvFile", 'overwrite':False})
 
   :copyright: (c) 2019 by David Tippett.
   :license: MIT License, see LICENSE for more details.

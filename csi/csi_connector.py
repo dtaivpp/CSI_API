@@ -1,7 +1,7 @@
 import requests
-from csi.csv_writer import export_csv
+from csi.api_errors import ApiError
 
-class CSI_Connector:
+class CsiConnector:
   """
   CSI Connector
   ~~~~~~~~~~~~~
@@ -10,8 +10,8 @@ class CSI_Connector:
   
   Basic Get Useage:
     >>> baseURL = "https://cloud.csiworld.com/VOWebAPI/v5"
-    >>> csi = CSI_Connector(token, baseURL)
-    >>> params = {'filters': 'f.FName|o.eq|v.Tippett',
+    >>> csi = CsiConnector(token, baseURL)
+    >>> params = {'filter': 'f.FName|o.eq|v.Tippett',
                   'fields': 'FName, LName',
                   'perpage':100}
     >>> data = csi.query(endpoints.AgentInfo, params)
@@ -19,7 +19,7 @@ class CSI_Connector:
 
   Basic Post Useage:
     >>> baseURL = "https://cloud.csiworld.com/VOWebAPI/v5"
-    >>> csi = CSI_Connector(token)
+    >>> csi = CsiConnector(token, baseURL)
     >>> data = {'User': 'jsmith', 'Function': 'Pause'}
     >>> csi.query(endpoints.lightstout, data)
 
@@ -36,8 +36,17 @@ class CSI_Connector:
     } 
 
 
+  def _check_status_error(self, status_code, endpoint):
+    """checks the return status code"""
+    if status_code != 200 and status_code != 201:
+      raise ApiError('{} to {} returned {}'.format(endpoint['type'], endpoint['endpoint'], status_code))
+    
+  pass
+
+
   def _getNext(self, _url):
-    """_getNext is used to get the next url in a sequence"""
+    """_getNext is used to get the next url in a sequence
+    """
     
     try:
       result = requests.get(_url, headers=self._headers)
@@ -50,27 +59,23 @@ class CSI_Connector:
   # The triple quotes create a doc string, so anytime you try and use the getData
   # function a dialog will pop up and show you what it is and what it expects
   # Underscores help us see which variables are local to the getData function
-  def _getInitial(self, endpoint, parameters):
-    """
-    _getInitial calls the endpoint the first time and returns the json body
-
-    Parameters: 
-      endpoint (from endpoints) 
-      parameters (generated query string) 
+  def _get_initial(self, endpoint, parameters):
+    """ _getInitial calls the endpoint the first time and returns the json body
     """
     
     # Generating the url using the endpoint and base url 
     url = self._baseURL + endpoint['endpoint']
     
-    try: 
-      result =  requests.get(url, \
-                             params=parameters, \
-                             headers=self._headers)
-    except:
-      print(result.headers)
+     
+    resp =  requests.get(
+      url,
+      params=parameters,
+      headers=self._headers
+    )
 
-    
-    return result.json()
+    self._check_status_error(resp.status_code, endpoint)
+
+    return resp.json()
 
 
   def _post(self, endpoint, parameters):
@@ -82,17 +87,17 @@ class CSI_Connector:
         paramaters: data to be sent 
     """
 
-    try: 
-      result = requests.post(_baseURL + endpoint['endpoint'], \
-                             data=parameters, \
-                             headers=self._headers)
-    except:
-      print(result.headers)
 
-    return result
+    resp = requests.post(
+      self._baseURL + endpoint['endpoint'], \
+      data=parameters, \
+      headers=self._headers
+    )
 
-  def export_as_csv(self, data, path, filename, overwrite=False ):
-    export_csv(data, path, filename, overwrite=False )
+    self._check_status_error(resp.status_code, endpoint)
+
+    return resp
+
 
   def query(self, endpoint, parameters):
     r"""
@@ -102,14 +107,14 @@ class CSI_Connector:
     :parameters: either json data to post or parameters object for get request
     """
     if endpoint['type'] == "get":
-      _return = self._getInitial(endpoint, parameters)
-      _data = _return[ endpoint['datatag'] ]
+      _return = self._get_initial(endpoint, parameters)
+      _data = _return[endpoint['datatag']]
 
       # Check if data has a next
       while _return["NextPageUri"] != None:
-        _return = self._getNext(  _return["NextPageUri"] )
+        _return = self._getNext(_return["NextPageUri"])
 
-        _data.extend( _return[ endpoint['datatag'] ] )
+        _data.extend(_return[ endpoint['datatag']])
       
       return _data
     
@@ -119,7 +124,7 @@ class CSI_Connector:
 
 
 
-class endpoints:
+class Endpoints:
   """
   Helper class with Endpoint / Datatag / Protocol 
   Used to prevent spelling errors

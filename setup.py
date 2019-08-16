@@ -4,7 +4,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="csi-connector-tai",
+    name="csi-tai",
     version="0.0.1",
     author="David Tippett",
     author_email="dtaivpp@gmail.com",

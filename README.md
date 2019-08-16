@@ -8,14 +8,21 @@ Please note this module was created in order to simplify bulk data pulling from 
 
 To get started install the requests module using the following command. 
 
-`python -m pip install requests`
+`python -m pip install csi-tai`
 
-Then follow the instructions in the CSI_API.py to create a data pull. 
 
-## Running 
+Basic Get Useage:
+  >>> baseURL = "https://cloud.csiworld.com/VOWebAPI/v5"
+  >>> csi = CsiConnector(token, baseURL)
+  >>> params = {'filter': 'f.FName|o.eq|v.Tippett',
+                'fields': 'FName, LName',
+                'perpage':100}
+  >>> data = csi.query(endpoints.AgentInfo, params)
+  
 
-To run the program open a command prompt and run the following command: 
+Basic Post Useage:
+  >>> baseURL = "https://cloud.csiworld.com/VOWebAPI/v5"
+  >>> csi = CsiConnector(token, baseURL)
+  >>> data = {'User': 'jsmith', 'Function': 'Pause'}
+  >>> csi.query(endpoints.lightstout, data)
 
-`python CSI_API.py`
-
-The program can be scheduled using chron, or windows task scheduler. 

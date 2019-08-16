@@ -4,7 +4,7 @@
 
 # Using the CSI API Library 
 
-Please note this module was created in order to simplify bulk data pulling from the Virtual Observer API. This project is in no way affiliated with [CSI World / Virtual Observer](www.csiworld.com).
+Please note this module was created in order to simplify bulk data pulling from the Virtual Observer API. This project is in no way affiliated with [CSI World / Virtual Observer](https://www.csiworld.com).
 
 ## Getting Started
 

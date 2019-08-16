@@ -1,4 +1,6 @@
 [![Build Status](https://travis-ci.com/dtaivpp/CSI_API.svg?branch=master)](https://travis-ci.com/dtaivpp/CSI_API)
+[![BCH compliance](https://bettercodehub.com/edge/badge/dtaivpp/CSI_API?branch=master)](https://bettercodehub.com/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 # Using the CSI API Library 
 
@@ -11,18 +13,20 @@ To get started install the requests module using the following command.
 `python -m pip install csi-tai`
 
 
-Basic Get Useage:
-  >>> baseURL = "https://cloud.csiworld.com/VOWebAPI/v5"
-  >>> csi = CsiConnector(token, baseURL)
-  >>> params = {'filter': 'f.FName|o.eq|v.Tippett',
-                'fields': 'FName, LName',
-                'perpage':100}
-  >>> data = csi.query(endpoints.AgentInfo, params)
-  
+Basic Get Useage:  
+  ```
+  baseURL = "https://cloud.csiworld.com/VOWebAPI/v5"  
+  csi = CsiConnector(token, baseURL)  
+  params = {'filter': 'f.FName|o.eq|v.Tippett',  
+                'fields': 'FName, LName',  
+                'perpage':100}  
+  data = csi.query(endpoints.AgentInfo, params)  
+  ```
 
-Basic Post Useage:
-  >>> baseURL = "https://cloud.csiworld.com/VOWebAPI/v5"
-  >>> csi = CsiConnector(token, baseURL)
-  >>> data = {'User': 'jsmith', 'Function': 'Pause'}
-  >>> csi.query(endpoints.lightstout, data)
-
+Basic Post Useage:  
+  ```
+  baseURL = "https://cloud.csiworld.com/VOWebAPI/v5"  
+  csi = CsiConnector(token, baseURL)  
+  data = {'User': 'jsmith', 'Function': 'Pause'}  
+  csi.query(endpoints.lightstout, data)  
+  ```

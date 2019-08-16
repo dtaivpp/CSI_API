@@ -9,6 +9,13 @@ from csi import Endpoints
 from csi import ApiError
 
 class BasicTests(unittest.TestCase):
+  csi = CsiConnector("asld34576y11lfawsergli34tyweo324owc", 'https://cloud.csiworld.com/VOWebAPI/v5/')
+  mock_return_headers = {
+    'Accept': 'application/json', 
+    'Accept-Encoding': 'gzip, deflate', 
+    'ApiToken': 'asld34576y11lfawsergli34tyweo324owc', 
+    'Content-Type': 'application/json'
+    }
 
   def _mock_response(
     self,
@@ -40,15 +47,6 @@ class BasicTests(unittest.TestCase):
   
   @mock.patch('csi.csi_connector.requests.get')
   def test_query_get(self, mock_get):
-    csi = CsiConnector("asld34576y11lfawsergli34tyweo324owc", 'https://cloud.csiworld.com/VOWebAPI/v5/')
-    
-    mock_return_headers = {
-      'Accept': 'application/json', 
-      'Accept-Encoding': 'gzip, deflate', 
-      'ApiToken': 'asld34576y11lfawsergli34tyweo324owc', 
-      'Content-Type': 'application/json'
-      }
-
 
     mock_resp = self._mock_response(
       json_data = {
@@ -60,12 +58,11 @@ class BasicTests(unittest.TestCase):
     params = {'filters': 'f.FName|o.eq|v.Tippett',
                   'fields': 'FName, LName',
                   'perpage':100}
-    data = csi.query(Endpoints.AgentInfo, params)
-
+    data = self.csi.query(Endpoints.AgentInfo, params)
      
     mock_get.assert_called_with(
       "https://cloud.csiworld.com/VOWebAPI/v5/Agents/AgentInfo", 
-      headers=mock_return_headers,
+      headers=self.mock_return_headers,
       params=params
       )
     
@@ -74,7 +71,6 @@ class BasicTests(unittest.TestCase):
 
   @mock.patch('csi.csi_connector.requests.get')
   def test_query_failed_get(self, mock_get):
-    csi = CsiConnector("asld34576y11lfawsergli34tyweo324owc", 'https://cloud.csiworld.com/VOWebAPI/v5/')
     
     mock_resp = self._mock_response(
       status = 400
@@ -87,14 +83,42 @@ class BasicTests(unittest.TestCase):
                   'perpage':100}
 
     with self.assertRaises(ApiError) as cm:
-      csi.query(Endpoints.AgentInfo, params)
+      self.csi.query(Endpoints.AgentInfo, params)
 
     self.assertEqual("get to Agents/AgentInfo returned 400", str(cm.exception))
 
 
   @mock.patch('csi.csi_connector.requests.post')
   def test_query_post(self, mock_post):
-    pass
+    mock_resp = self._mock_response(
+      status = 201
+      )
+
+    mock_post.return_value = mock_resp
+
+    data = {'User': 'jsmith', 'Function': 'Pause'}
+    self.csi.query(Endpoints.LightsOut, data)
+    mock_post.assert_called_with(
+      "https://cloud.csiworld.com/VOWebAPI/v5/PCI/LightsOut", 
+      headers=self.mock_return_headers,
+      data=data
+      )
+
+  @mock.patch('csi.csi_connector.requests.get')
+  def test_get_next(self, mock_get):
+    URL = "https://cloud.csiworld.com/VOWebAPI/v5/Evaluations/ScoringSession/?fields=HeaderKey&perpage=10&after=1289384092&pagenum=1"
+    
+    mock_resp = self._mock_response(
+      status = 200
+      )
+
+    mock_get.return_value = mock_resp
+
+    self.csi._getNext(URL)
+    mock_get.assert_called_with(
+      URL, 
+      headers=self.mock_return_headers, 
+    )
 
 
 if __name__ == "__main__":

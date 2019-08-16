@@ -39,19 +39,19 @@ class CsiConnector:
   def _check_status_error(self, status_code, endpoint):
     """checks the return status code"""
     if status_code != 200 and status_code != 201:
-      raise ApiError('{} to {} returned {}'.format(endpoint['type'], endpoint['endpoint'], status_code))
-    
-  pass
+      if endpoint != None:
+        raise ApiError('{} to {} returned {}'.format(endpoint['type'], endpoint['endpoint'], status_code)) 
+      else:
+        raise ApiError('Request returned {}'.format(status_code)) 
+    pass
 
 
   def _getNext(self, _url):
     """_getNext is used to get the next url in a sequence
     """
     
-    try:
-      result = requests.get(_url, headers=self._headers)
-    except:
-      print(result.headers)
+    result = requests.get(_url, headers=self._headers)
+    self._check_status_error(result.status_code, None)
 
     return result.json()
 

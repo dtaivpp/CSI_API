@@ -34,13 +34,11 @@ def export_csv(_data, parameters):
   if parameters['overwrite']:
     _path = parameters['path'] + parameters['filename'] + ".csv"
   else:
-    now = datetime.now
     timestr = datetime.utcnow().strftime('%Y-%m-%d-%f')
     
     _path = parameters['path'] + parameters['filename'] + timestr + ".csv"
 
   _location = open(_path, 'w+')
-  count = 0
   _filestr = ""
 
   header = _data[0].keys()

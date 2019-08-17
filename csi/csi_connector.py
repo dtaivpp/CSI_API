@@ -9,7 +9,7 @@ class CsiConnector:
   CSI Connector is a helper class to simplify communicating with the Virtual Observer / CSI API
   
   Basic Get Useage:
-    >>> baseURL = "https://cloud.csiworld.com/VOWebAPI/v5"
+    >>> baseURL = "https://cloud.csiworld.com/VOWebAPI/v5/"
     >>> csi = CsiConnector(token, baseURL)
     >>> params = {'filter': 'f.FName|o.eq|v.Tippett',
                   'fields': 'FName, LName',
@@ -18,7 +18,7 @@ class CsiConnector:
   
 
   Basic Post Useage:
-    >>> baseURL = "https://cloud.csiworld.com/VOWebAPI/v5"
+    >>> baseURL = "https://cloud.csiworld.com/VOWebAPI/v5/"
     >>> csi = CsiConnector(token, baseURL)
     >>> data = {'User': 'jsmith', 'Function': 'Pause'}
     >>> csi.query(endpoints.lightstout, data)

@@ -21,7 +21,7 @@ Basic Get Useage:
   params = {'filter': 'f.FName|o.eq|v.Tippett',  
                 'fields': 'FName, LName',  
                 'perpage':100}  
-  data = csi.query(endpoints.AgentInfo, params)  
+  data = csi.query(Endpoints.AgentInfo, params)  
   ```
 
 Basic Post Useage:  
@@ -29,5 +29,5 @@ Basic Post Useage:
   baseURL = "https://cloud.csiworld.com/VOWebAPI/v5"  
   csi = CsiConnector(token, baseURL)  
   data = {'User': 'jsmith', 'Function': 'Pause'}  
-  csi.query(endpoints.lightstout, data)  
+  csi.query(Endpoints.lightstout, data)  
   ```

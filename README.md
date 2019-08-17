@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.com/dtaivpp/CSI_API.svg?branch=master)](https://travis-ci.com/dtaivpp/CSI_API)
 [![BCH compliance](https://bettercodehub.com/edge/badge/dtaivpp/CSI_API?branch=master)](https://bettercodehub.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![PyPI version](https://badge.fury.io/py/csi-tai.svg)](https://badge.fury.io/py/csi-tai)
+[![PyPi version](https://pypip.in/v/csi-tai/badge.png)](https://crate.io/packages/csi-tai/)
 
 # Using the CSI API Library 
 
